@@ -2,6 +2,7 @@ package com.pritam.pocketplan.dao.impl;
 
 import com.pritam.pocketplan.dao.TransactionDao;
 import com.pritam.pocketplan.models.TransactionEntry;
+import com.pritam.pocketplan.models.request.TransactionRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -72,5 +73,41 @@ public class TransactionDaoImpl implements TransactionDao {
         return mongoTemplate.findAll(TransactionEntry.class);
 
     }
+
+    @Override
+    public List<TransactionEntry> getTransaction(TransactionRequest transactionRequest) {
+        Query query = new Query();
+
+        // Add time range filter
+        if (transactionRequest.getStartTime() != null && transactionRequest.getEndTime() != null) {
+            query.addCriteria(Criteria.where("timestamp")
+                    .gte(transactionRequest.getStartTime())
+                    .lte(transactionRequest.getEndTime()));
+        }
+
+        // Add accounts filter
+        if (transactionRequest.getAccounts() != null && !transactionRequest.getAccounts().isEmpty()) {
+            query.addCriteria(Criteria.where("account").in(transactionRequest.getAccounts()));
+        }
+
+        // Add categories filter
+        if (transactionRequest.getCatagories() != null && !transactionRequest.getCatagories().isEmpty()) {
+            query.addCriteria(Criteria.where("category").in(transactionRequest.getCatagories()));
+        }
+
+        // Add transaction type filter
+        if (transactionRequest.getTransactionType() != null) {
+            query.addCriteria(Criteria.where("transactionType").is(transactionRequest.getTransactionType().toString()));
+        }
+
+        // Log the constructed query (optional for debugging purposes)
+        System.out.println("Executing query: " + query);
+
+        // Execute the query using MongoTemplate
+        return mongoTemplate.find(query, TransactionEntry.class);
+    }
+
+
+
 
 }

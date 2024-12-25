@@ -12,10 +12,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class Utility {
 
@@ -94,15 +91,21 @@ public class Utility {
         if (transactionEntry.getHumanReadableDate() != null) {
             try {
                 SimpleDateFormat[] dateFormats = {
-                        new SimpleDateFormat("MM/dd/yyyy HH:mm:ss"), // Format with time
-                        new SimpleDateFormat("MM/dd/yyyy")          // Format without time
+                        new SimpleDateFormat("dd/MM/yyyy HH:mm:ss"), // Format with time
+                        new SimpleDateFormat("dd/MM/yyyy")          // Format without time
                 };
 
 
                 for (SimpleDateFormat dateFormat : dateFormats) {
                     try {
+                        dateFormat.setTimeZone(TimeZone.getTimeZone("GMT")); // Set the timezone to GMT
                         Date parsedDate = dateFormat.parse(transactionEntry.getHumanReadableDate());
                         long timestamp = parsedDate.getTime();
+
+
+
+
+
                         transactionEntry.setTimestamp(timestamp);
                         break;
                     } catch (ParseException e) {}
@@ -185,7 +188,14 @@ public class Utility {
     }
 
 
-
-
-
+    public long getStartOfDayTimestamp(long timestamp) {
+//        Calendar calendar = Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+        calendar.setTimeInMillis(timestamp);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        return calendar.getTimeInMillis();
+    }
 }

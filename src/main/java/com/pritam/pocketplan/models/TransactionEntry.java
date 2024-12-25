@@ -11,9 +11,9 @@ public class TransactionEntry {
     private String id;
     private Long timestamp;
     private String humanReadableDate;
-    private String account; // Fixed capitalization
-    private String category; // Fixed spelling
-    private String subcategory; // Fixed spelling
+    private String account;
+    private String category;
+    private String subcategory;
     private String note;
     private Double amount;
     private TransactionType transactionType;

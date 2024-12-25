@@ -1,6 +1,6 @@
 package com.pritam.pocketplan.models;
 
-public class apiReturn<T> {
+public class ApiReturn<T> {
 
     private Integer statusCode;  // Numeric status code (200, 400, etc.)
     private String message;      // Error message or success message
@@ -8,22 +8,22 @@ public class apiReturn<T> {
     private String error;        // Optional: any error message if something goes wrong
 
     // Constructors
-    public apiReturn(Integer statusCode, String message, T data, String error) {
+    public ApiReturn(Integer statusCode, String message, T data, String error) {
         this.statusCode = statusCode;
         this.message = message;
         this.data = data;
         this.error = error;
     }
 
-    public apiReturn(Integer statusCode, String message, T data) {
+    public ApiReturn(Integer statusCode, String message, T data) {
         this(statusCode, message, data, null);
     }
 
-    public apiReturn(Integer statusCode, String message, String error) {
+    public ApiReturn(Integer statusCode, String message, String error) {
         this(statusCode, message, null, error);
     }
 
-    public apiReturn() {
+    public ApiReturn() {
     }
 
     // Getters and setters

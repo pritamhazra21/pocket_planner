@@ -1,6 +1,7 @@
 package com.pritam.pocketplan.dao;
 
 import com.pritam.pocketplan.models.TransactionEntry;
+import com.pritam.pocketplan.models.request.TransactionRequest;
 
 import java.util.List;
 
@@ -16,4 +17,7 @@ public interface TransactionDao {
     void deleteAllData();
 
     List<TransactionEntry> getAllTransaction();
+
+    List<TransactionEntry> getTransaction(TransactionRequest transactionRequest);
+
 }
